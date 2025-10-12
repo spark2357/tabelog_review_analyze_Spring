@@ -7,6 +7,10 @@ import com.example.reviewanalyze.Dto.ReviewDto;
 import com.example.reviewanalyze.Dto.ReviewResultDto;
 import com.example.reviewanalyze.Repository.ReviewResultRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,8 +70,11 @@ public class ReviewResultService {
      * 전체 ReviewResult 조회
      */
     @Transactional(readOnly = true)
-    public List<ReviewResult> findAll() {
-        return reviewResultRepository.findAll();
+    public Page<ReviewResult> getReviewResultsByUserId(Long userId, int page, int size, String sortBy, String direction) {
+        System.out.println("userId = " + userId + ", page = " + page + ", size = " + size + ", sortBy = " + sortBy + ", direction = " + direction);
+        Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return reviewResultRepository.findByUserId(userId, pageable);
     }
 
     /**

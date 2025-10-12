@@ -26,7 +26,7 @@ public class SecurityConfig {
                 )
                 .formLogin(form -> form
                         .loginPage("/login") // 로그인 페이지 지정
-                        .defaultSuccessUrl("/home") // 로그인 성공 시 메인 페이지로
+                        .defaultSuccessUrl("/my/results") // 로그인 성공 시 메인 페이지로
                         .permitAll()
                 )
                 .logout(logout -> logout

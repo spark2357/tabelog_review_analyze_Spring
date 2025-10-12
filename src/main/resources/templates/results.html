@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>내 이용 내역</title>
+    <link rel="stylesheet" th:href="@{/css/results.css}">
+</head>
+<body>
+
+<h2>내가 분석한 식당 목록</h2>
+
+<form method="get" action="/my/results" style="margin-bottom: 10px;">
+    <input type="hidden" name="page" value="0"/>
+    <label>정렬 기준:
+        <select name="sortBy">
+            <option value="id" th:selected="${sortBy == 'id'}">최신순</option>
+            <option value="score" th:selected="${sortBy == 'score'}">평점</option>
+            <option value="reviewCount" th:selected="${sortBy == 'reviewCount'}">리뷰 수</option>
+        </select>
+    </label>
+    <label>방향:
+        <select name="direction">
+            <option value="desc" th:selected="${direction == 'desc'}">내림차순</option>
+            <option value="asc" th:selected="${direction == 'asc'}">오름차순</option>
+        </select>
+    </label>
+    <button type="submit">정렬 적용</button>
+</form>
+
+<table>
+    <thead>
+    <tr>
+        <th>식당명</th>
+        <th>주소</th>
+        <th>평점</th>
+        <th>리뷰 수</th>
+        <th>상세보기</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="result : ${results}">
+        <td th:text="${result.name}"></td>
+        <td th:text="${result.address}"></td>
+        <td th:text="${result.score}"></td>
+        <td th:text="${result.reviewCount}"></td>
+        <td><a th:href="@{'/result/' + ${result.id}}">보기</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="pagination">
+    <a th:if="${currentPage > 0}"
+       th:href="@{/my/results(page=${i},sortBy=${sortBy},direction=${direction})}">
+        이전
+    </a>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+    <a th:href="@{/my/results(page=${i},sortBy=${sortBy},direction=${direction})}"
+       th:text="${i + 1}"
+       th:classappend="${i == currentPage} ? 'active' : ''"></a>
+  </span>
+
+    <a th:if="${currentPage < totalPages - 1}"
+       th:href="@{/my/results(page=${i},sortBy=${sortBy},direction=${direction})}">
+        다음
+    </a>
+</div>
+
+</body>
+</html>
