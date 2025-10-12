@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈 | 타베로그 리뷰 분석</title>
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>타베로그 리뷰 분석</h1>
+        <p>회원가입 또는 로그인 후 이용해주세요.</p>
+    </header>
+
+    <main>
+        <div class="button-group">
+            <a th:href="@{/login}" class="btn btn-login">로그인</a>
+            <a th:href="@{/signup}" class="btn btn-signup">회원가입</a>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2025 MyApp. All rights reserved.</p>
+    </footer>
+</div>
+</body>
+</html>
