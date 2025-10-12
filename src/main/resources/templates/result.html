@@ -24,6 +24,18 @@
         <a th:href="${result.url}" target="_blank">타베로그에서 보기</a>
     </header>
 
+    <div class="card-container">
+        <div th:each="entry : ${groupedEntities}" class="card">
+            <h4 th:text="${entry.key}" class="card-title">Value</h4>
+            <div class="key-box-container">
+            <span th:each="info : ${entry.value}"
+                  class="key-box"
+                  th:text="${info.entity}"
+                  th:title="'Review ID: ' + ${info.reviewId}"></span>
+            </div>
+        </div>
+    </div>
+
     <section class="reviews">
         <h2>리뷰 목록</h2>
         <div th:each="review : ${result.reviews}" class="review-card">

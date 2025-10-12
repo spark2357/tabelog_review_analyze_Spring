@@ -2,6 +2,7 @@ package com.example.reviewanalyze.Controller;
 
 import com.example.reviewanalyze.Domain.ReviewResult;
 import com.example.reviewanalyze.Domain.User;
+import com.example.reviewanalyze.Dto.KeywordDto;
 import com.example.reviewanalyze.Service.ReviewResultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -11,6 +12,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -23,8 +27,11 @@ public class ResultController {
         ReviewResult reviewResult = reviewResultService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("리뷰 결과를 찾을 수 없습니다."));
 
+        Map<String, List<KeywordDto>> groupedEntities = reviewResultService.getGroupEntitiesByLabel(reviewResult);
+
+        model.addAttribute("groupedEntities", groupedEntities);
         model.addAttribute("result", reviewResult);
-        return "result"; // result.html 렌더링
+        return "result";
     }
 
     @GetMapping("/my/results")

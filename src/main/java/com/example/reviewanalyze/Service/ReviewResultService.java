@@ -3,6 +3,7 @@ package com.example.reviewanalyze.Service;
 import com.example.reviewanalyze.Domain.Review;
 import com.example.reviewanalyze.Domain.ReviewResult;
 import com.example.reviewanalyze.Domain.User;
+import com.example.reviewanalyze.Dto.KeywordDto;
 import com.example.reviewanalyze.Dto.ReviewDto;
 import com.example.reviewanalyze.Dto.ReviewResultDto;
 import com.example.reviewanalyze.Repository.ReviewResultRepository;
@@ -14,9 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -56,6 +55,30 @@ public class ReviewResultService {
 
         reviewResult.setReviews(reviewList);
         return reviewResultRepository.save(reviewResult);
+    }
+
+    public Map<String, List<KeywordDto>> getGroupEntitiesByLabel(ReviewResult reviewResult) {
+        Map<String, List<KeywordDto>> groupedEntities = new HashMap<>();
+        Set<String> seenKeys = new HashSet<>();
+
+        for (Review review : reviewResult.getReviews()) {
+            Long reviewId = review.getId();
+            Map<String, String> entities = review.getEntitiesWithLabel();
+            if (entities == null) continue;
+
+            for (Map.Entry<String, String> entry : entities.entrySet()) {
+                String entity = entry.getKey();
+                String label = entry.getValue();
+
+                if (seenKeys.contains(entity)) continue;
+                seenKeys.add(entity);
+
+                groupedEntities.computeIfAbsent(label, k -> new ArrayList<>())
+                        .add(new KeywordDto(reviewId, entity));
+            }
+        }
+
+        return groupedEntities;
     }
 
     /**
