@@ -1,8 +1,8 @@
 package com.example.reviewanalyze.Controller;
 
+import com.example.reviewanalyze.Domain.Review;
 import com.example.reviewanalyze.Domain.ReviewResult;
 import com.example.reviewanalyze.Domain.User;
-import com.example.reviewanalyze.Dto.KeywordDto;
 import com.example.reviewanalyze.Service.ReviewResultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -22,17 +22,33 @@ public class ResultController {
 
     private final ReviewResultService reviewResultService;
 
+    @GetMapping("/result/{id}/details")
+    public String showReviewsByEntity(@PathVariable Long id,
+                                      @RequestParam(value = "entity", required = true) String entity,
+                                      Model model) {
+        ReviewResult reviewResult = reviewResultService.findById(id)
+                .orElseThrow(() -> new RuntimeException("리뷰 결과를 찾을 수 없습니다."));
+
+        List<Review> reviewsWithEntity = reviewResultService.findByEntity(reviewResult, entity);
+        model.addAttribute("reviews", reviewsWithEntity);
+        model.addAttribute("placeName", reviewResult.getName());
+        model.addAttribute("entity", entity);
+        model.addAttribute("prevId", id);
+        return "details";
+    }
+
     @GetMapping("/result/{id}")
     public String showResult(@PathVariable Long id, Model model) {
         ReviewResult reviewResult = reviewResultService.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("리뷰 결과를 찾을 수 없습니다."));
 
-        Map<String, List<KeywordDto>> groupedEntities = reviewResultService.getGroupEntitiesByLabel(reviewResult);
+        Map<String, Map<String, Long>> groupedEntities = reviewResultService.getAggregatedEntities(reviewResult);
 
         model.addAttribute("groupedEntities", groupedEntities);
         model.addAttribute("result", reviewResult);
         return "result";
     }
+
 
     @GetMapping("/my/results")
     public String home(@RequestParam(defaultValue = "0") int page,
@@ -49,6 +65,6 @@ public class ResultController {
         model.addAttribute("totalPages", results.getTotalPages());
         model.addAttribute("sortBy", sortBy);
         model.addAttribute("direction", direction);
-        return "results";
+        return "list";
     }
 }

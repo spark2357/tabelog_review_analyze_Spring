@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>내 이용 내역</title>
-    <link rel="stylesheet" th:href="@{/css/results.css}">
+    <link rel="stylesheet" th:href="@{/css/list.css}">
 </head>
 <body>
 
 <h2>내가 분석한 식당 목록</h2>
-
+<div style="margin-bottom: 20px; text-align: center;">
+    <a href="/analyze" class="analyze-btn">새 식당 분석하기</a>
+</div>
 <form method="get" action="/my/results" style="margin-bottom: 10px;">
     <input type="hidden" name="page" value="0"/>
     <label>정렬 기준:

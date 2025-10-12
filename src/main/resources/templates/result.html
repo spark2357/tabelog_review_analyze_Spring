@@ -6,7 +6,6 @@
     <link rel="stylesheet" href="/css/result.css">
 </head>
 <body>
-
 <div class="container">
     <header>
         <h1 th:text="${result.name}">식당 이름</h1>
@@ -24,14 +23,17 @@
         <a th:href="${result.url}" target="_blank">타베로그에서 보기</a>
     </header>
 
-    <div class="card-container">
-        <div th:each="entry : ${groupedEntities}" class="card">
-            <h4 th:text="${entry.key}" class="card-title">Value</h4>
-            <div class="key-box-container">
-            <span th:each="info : ${entry.value}"
-                  class="key-box"
-                  th:text="${info.entity}"
-                  th:title="'Review ID: ' + ${info.reviewId}"></span>
+    <!-- groupedEntities: Map<label, Map<String, Long>> -->
+    <div th:each="entityEntry : ${groupedEntities}">
+        <div class="label-group">
+            <div class="label-title" th:text="${entityEntry.key}"></div>
+
+            <div class="entity-container">
+                <a th:each="entityInfo : ${entityEntry.value}"
+                   th:href="@{'/result/' + ${result.id} + '/details?entity=' + ${entityInfo.key}}" class="entity-box">
+                    <span class="entity-name" th:text="${entityInfo.key}"></span>
+                    <span class="entity-count" th:text="' ' + ${entityInfo.value}"></span>
+                </a>
             </div>
         </div>
     </div>
@@ -39,12 +41,12 @@
     <section class="reviews">
         <h2>리뷰 목록</h2>
         <div th:each="review : ${result.reviews}" class="review-card">
-            <p class="content" th:text="${review.content}">리뷰 내용</p>
             <p class="score">⭐ <span th:text="${review.score}">4.5</span></p>
             <p class="visit-info"
                th:text="'방문시기: ' + ${review.visitYear} + '년 ' + ${review.visitMonth} + '월 ' + ${review.visitTime}">
                 방문시기 정보
             </p>
+            <p class="content" th:text="${review.content}">리뷰 내용</p>
 
             <div class="entities">
                 <p><strong>분석된 항목:</strong></p>
@@ -56,6 +58,5 @@
         </div>
     </section>
 </div>
-
 </body>
 </html>

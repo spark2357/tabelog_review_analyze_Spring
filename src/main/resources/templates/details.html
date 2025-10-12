@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>리뷰 상세 보기</title>
+    <link rel="stylesheet" th:href="@{/css/result.css}">
+</head>
+<body>
+<div class="container">
+    <h2 th:text="${placeName} + ' 리뷰 상세 보기'">리뷰 상세 보기</h2>
+    <h3 th:text="${entity} + ' 포함 리뷰 보기'">리뷰 상세 보기</h3>
+
+    <section class="reviews">
+        <h2>리뷰 목록</h2>
+        <div th:each="review : ${reviews}" class="review-card">
+            <p class="score">⭐ <span th:text="${review.score}">4.5</span></p>
+            <p class="visit-info"
+               th:text="'방문시기: ' + ${review.visitYear} + '년 ' + ${review.visitMonth} + '월 ' + ${review.visitTime}">
+                방문시기 정보
+            </p>
+            <p class="content" th:text="${review.content}">리뷰 내용</p>
+        </div>
+    </section>
+
+    <div class="back-btn">
+        <a th:href="@{'/result/' + ${prevId}}" class="btn">← 돌아가기</a>
+    </div>
+</div>
+</body>
+</html>

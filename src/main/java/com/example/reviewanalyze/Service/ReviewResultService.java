@@ -3,7 +3,7 @@ package com.example.reviewanalyze.Service;
 import com.example.reviewanalyze.Domain.Review;
 import com.example.reviewanalyze.Domain.ReviewResult;
 import com.example.reviewanalyze.Domain.User;
-import com.example.reviewanalyze.Dto.KeywordDto;
+import com.example.reviewanalyze.Dto.EntityInfo;
 import com.example.reviewanalyze.Dto.ReviewDto;
 import com.example.reviewanalyze.Dto.ReviewResultDto;
 import com.example.reviewanalyze.Repository.ReviewResultRepository;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,8 +31,8 @@ public class ReviewResultService {
         reviewResult.setAddress(result.getAddress());
         reviewResult.setUrl(result.getUrl());
         List<String> avgPrice = result.getPrice();
-        reviewResult.setLunchPrice(avgPrice.getFirst());
-        reviewResult.setDinnerPrice(avgPrice.getLast());
+        reviewResult.setLunchPrice(avgPrice.getLast());
+        reviewResult.setDinnerPrice(avgPrice.getFirst());
         reviewResult.setScore(result.getScore());
         reviewResult.setReviewCount(result.getReviewCount());
         reviewResult.setUser(user);
@@ -57,30 +58,6 @@ public class ReviewResultService {
         return reviewResultRepository.save(reviewResult);
     }
 
-    public Map<String, List<KeywordDto>> getGroupEntitiesByLabel(ReviewResult reviewResult) {
-        Map<String, List<KeywordDto>> groupedEntities = new HashMap<>();
-        Set<String> seenKeys = new HashSet<>();
-
-        for (Review review : reviewResult.getReviews()) {
-            Long reviewId = review.getId();
-            Map<String, String> entities = review.getEntitiesWithLabel();
-            if (entities == null) continue;
-
-            for (Map.Entry<String, String> entry : entities.entrySet()) {
-                String entity = entry.getKey();
-                String label = entry.getValue();
-
-                if (seenKeys.contains(entity)) continue;
-                seenKeys.add(entity);
-
-                groupedEntities.computeIfAbsent(label, k -> new ArrayList<>())
-                        .add(new KeywordDto(reviewId, entity));
-            }
-        }
-
-        return groupedEntities;
-    }
-
     /**
      * ID로 ReviewResult 조회
      */
@@ -88,18 +65,63 @@ public class ReviewResultService {
     public Optional<ReviewResult> findById(Long id) {
         return reviewResultRepository.findById(id);
     }
+    public Map<String, Map<String, Long>> getAggregatedEntities(ReviewResult reviewResult) {
+        List<EntityInfo> entityList  = new ArrayList<>();
+        List<Review> reviewList = reviewResult.getReviews();
+        for(Review review : reviewList){
+            Long reviewId = review.getId();
+            Map<String, String> entities = review.getEntitiesWithLabel();
+            if (entities == null) continue;
+            for(Map.Entry<String, String> entry : entities.entrySet()){
+                entityList.add(new EntityInfo(reviewId, entry.getKey(), entry.getValue()));
+            }
+        }
 
+        return entityList.stream()
+                // 1. label 기준 그룹핑
+                .collect(Collectors.groupingBy(
+                        EntityInfo::getLabel, // label
+                        Collectors.toList()
+                ))
+                .entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey, // label
+                        e -> e.getValue().stream()
+                                .collect(Collectors.groupingBy(
+                                        EntityInfo::getEntity,
+                                        Collectors.counting()
+                                ))
+                                .entrySet().stream()
+                                .sorted(Map.Entry.<String, Long>comparingByValue().reversed())
+                                .collect(Collectors.toMap(
+                                        Map.Entry::getKey,
+                                        Map.Entry::getValue,
+                                        (oldVal, newVal) -> oldVal,
+                                        LinkedHashMap::new
+                                ))
+                ));
+    }
     /**
      * 전체 ReviewResult 조회
      */
     @Transactional(readOnly = true)
     public Page<ReviewResult> getReviewResultsByUserId(Long userId, int page, int size, String sortBy, String direction) {
-        System.out.println("userId = " + userId + ", page = " + page + ", size = " + size + ", sortBy = " + sortBy + ", direction = " + direction);
         Sort sort = direction.equalsIgnoreCase("desc") ? Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
         Pageable pageable = PageRequest.of(page, size, sort);
         return reviewResultRepository.findByUserId(userId, pageable);
     }
-
+    @Transactional(readOnly = true)
+    public List<Review> findByEntity(ReviewResult reviewResult, String entity){
+        List<Review> reviews = reviewResult.getReviews();
+        List<Review> reviewsWithEntity = new ArrayList<>();
+        for (Review review : reviews){
+            if(review.getEntitiesWithLabel().containsKey(entity)){
+                reviewsWithEntity.add(review);
+            }
+        }
+        return reviewsWithEntity;
+    }
     /**
      * 삭제
      */

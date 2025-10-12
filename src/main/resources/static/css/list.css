@@ -82,6 +82,17 @@ a:hover {
     color: #0056b3;
 }
 
+.analyze-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
 /* ------------------------------
    페이지네이션
 ------------------------------ */
