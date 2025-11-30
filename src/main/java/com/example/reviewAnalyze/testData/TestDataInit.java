@@ -1,0 +1,47 @@
+package com.example.reviewAnalyze.testData;
+
+import com.example.reviewAnalyze.dto.AnalyzedResultDto;
+import com.example.reviewAnalyze.entity.User;
+import com.example.reviewAnalyze.repository.UserRepository;
+import com.example.reviewAnalyze.service.ResultService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import java.io.InputStream;
+
+@Component
+@RequiredArgsConstructor
+public class TestDataInit implements CommandLineRunner {
+
+    private final UserRepository userRepository;
+    private final ResultService resultService;
+    
+    private final ObjectMapper objectMapper;
+    private final ResourceLoader resourceLoader;
+    private final PasswordEncoder passwordEncoder;
+
+    @Override
+    public void run(String... args) throws Exception {
+        // JSON 파일 읽기
+        InputStream inputStream = resourceLoader.getResource("classpath:testData.json").getInputStream();
+        AnalyzedResultDto testResult = objectMapper.readValue(inputStream, AnalyzedResultDto.class);
+        User user = createTestUser();
+        resultService.saveResult(user, testResult);
+    }
+
+    private User createTestUser() {
+        String password = passwordEncoder.encode("test!");
+
+        User user = User.builder()
+                .username("test")
+                .password(password)
+                .role("USER")
+                .build();
+
+        return userRepository.save(user);
+    }
+}

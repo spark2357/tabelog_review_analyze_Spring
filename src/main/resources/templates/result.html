@@ -2,37 +2,37 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title th:text="${result.name} + ' - 분석 결과'">리뷰 분석 결과</title>
+    <title th:text="${place.name} + ' - 분석 결과'">리뷰 분석 결과</title>
     <link rel="stylesheet" href="/css/result.css">
 </head>
 <body>
 <div class="container">
-    <header>
-        <h1 th:text="${result.name}">식당 이름</h1>
-        <p th:text="'주소: ' + ${result.address}"></p>
+    <header th:object="${place}">
+        <h1 th:text="*{name}">식당 이름</h1>
+        <p th:text="|주소: *{address}|"></p>
         <p>
-            <strong>평균 점수:</strong>
-            <span th:text="${result.score}"></span><br>
+            <strong>평점:</strong>
+            <span th:text="*{score}"></span><br>
             <strong>점심 가격대:</strong>
-            <span th:text="${result.lunchPrice}"></span><br>
+            <span th:text="*{lunchPrice}"></span><br>
             <strong>저녁 가격대:</strong>
-            <span th:text="${result.dinnerPrice}"></span><br>
+            <span th:text="*{dinnerPrice}"></span><br>
             <strong>리뷰 수:</strong>
-            <span th:text="${result.reviewCount}"></span>
+            <span th:text="*{reviewCount}"></span>
         </p>
-        <a th:href="${result.url}" target="_blank">타베로그에서 보기</a>
+        <a th:href="*{url}" target="_blank">타베로그에서 보기</a>
     </header>
 
-    <!-- groupedEntities: Map<label, Map<String, Long>> -->
-    <div th:each="entityEntry : ${groupedEntities}">
+    <!-- labeledKeywords: ConcurrentHashMap<String, ConcurrentHashMap<String, Integer>> -->
+    <div th:each="labeledKeywordList : ${labeledKeywords}">
         <div class="label-group">
-            <div class="label-title" th:text="${entityEntry.key}"></div>
+            <div class="label-title" th:text="${labeledKeywordList.labelName}"></div>
 
             <div class="entity-container">
-                <a th:each="entityInfo : ${entityEntry.value}"
-                   th:href="@{'/result/' + ${result.id} + '/details?entity=' + ${entityInfo.key}}" class="entity-box">
-                    <span class="entity-name" th:text="${entityInfo.key}"></span>
-                    <span class="entity-count" th:text="' ' + ${entityInfo.value}"></span>
+                <a th:each="keywordCount : ${labeledKeywordList.labeledKeywords}"
+                   class="entity-box">
+                    <span class="entity-name" th:text="${keywordCount.keyword}"></span>
+                    <span class="entity-count" th:text="' ' + ${keywordCount.count}"></span>
                 </a>
             </div>
         </div>
@@ -40,23 +40,76 @@
 
     <section class="reviews">
         <h2>리뷰 목록</h2>
-        <div th:each="review : ${result.reviews}" class="review-card">
+        <div th:each="review : ${reviews}" class="review-card">
             <p class="score">⭐ <span th:text="${review.score}">4.5</span></p>
             <p class="visit-info"
                th:text="'방문시기: ' + ${review.visitYear} + '년 ' + ${review.visitMonth} + '월 ' + ${review.visitTime}">
                 방문시기 정보
             </p>
-            <p class="content" th:text="${review.content}">리뷰 내용</p>
-
-            <div class="entities">
-                <p><strong>분석된 항목:</strong></p>
-                <ul>
-                    <li th:each="entry : ${review.entitiesWithLabel}"
-                        th:text="${entry.value} + ' → ' + ${entry.key}"></li>
-                </ul>
-            </div>
+            <p class="content" th:utext="${review.content}">리뷰 내용</p>
         </div>
     </section>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const entityBoxes = document.querySelectorAll(".entity-box");
+        const reviewCards = document.querySelectorAll(".review-card");
+
+        // 현재 활성화된 키워드 집합
+        const activeKeywords = new Set();
+
+        entityBoxes.forEach(box => {
+            box.addEventListener("click", () => {
+                const keyword = box.querySelector(".entity-name").textContent.trim();
+
+                // 활성화 토글
+                if (activeKeywords.has(keyword)) {
+                    activeKeywords.delete(keyword);
+                    box.classList.remove("active"); // CSS로 활성화 표시 제거
+                } else {
+                    activeKeywords.add(keyword);
+                    box.classList.add("active"); // CSS로 활성화 표시 추가
+                }
+
+                // 리뷰 필터링 및 하이라이트
+                filterAndHighlightReviews();
+            });
+        });
+
+        function filterAndHighlightReviews() {
+            reviewCards.forEach(card => {
+                const contentEl = card.querySelector(".content");
+                const originalText = contentEl.textContent; // 원본 텍스트
+                let highlightedText = originalText;
+
+                // 키워드가 하나라도 있으면 필터링
+                if (activeKeywords.size > 0) {
+                    let hasMatch = false;
+
+                    activeKeywords.forEach(keyword => {
+                        const regex = new RegExp(`(${keyword})`, "gi");
+                        if (regex.test(originalText)) {
+                            hasMatch = true;
+                            // 하이라이트 처리
+                            highlightedText = highlightedText.replace(regex, `<mark>$1</mark>`);
+                        }
+                    });
+
+                    if (hasMatch) {
+                        card.style.display = "block";
+                        contentEl.innerHTML = highlightedText;
+                    } else {
+                        card.style.display = "none";
+                    }
+                } else {
+                    // 키워드가 없으면 모든 리뷰 표시, 하이라이트 제거
+                    card.style.display = "block";
+                    contentEl.textContent = originalText;
+                }
+            });
+        }
+    });
+</script>
 </body>
 </html>

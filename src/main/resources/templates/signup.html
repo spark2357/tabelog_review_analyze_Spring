@@ -11,12 +11,12 @@
     <!-- 회원가입 폼 -->
     <form th:action="@{/register}" method="post" th:object="${user}">
         <div class="input-group">
-            <label for="username">아이디</label>
-            <input type="text" id="username" th:field="*{username}" required></label><br>
+            <label th:for="*{username}">아이디</label>
+            <input type="text" th:field="*{username}" required></label><br>
         </div>
         <div class="input-group">
-            <label for="password">비밀번호</label>
-            <input type="password" id="password" th:field="*{password}" required></label><br>
+            <label th:for="*{password}">비밀번호</label>
+            <input type="password" th:field="*{password}" required></label><br>
         </div>
         <button type="submit" class="btn-login">가입하기</button>
     </form>

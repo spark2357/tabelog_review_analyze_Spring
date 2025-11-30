@@ -140,3 +140,12 @@ a:hover {
 a:active {
     text-decoration: none;
 }
+
+.entity-box.active {
+    background-color: #ffe08a;
+    border: 2px solid #ff9900;
+}
+mark {
+    background-color: yellow;
+    font-weight: bold;
+}
