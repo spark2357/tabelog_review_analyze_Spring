@@ -20,7 +20,7 @@ public class AnalyzeService {
     @Value("${fastapi.url}")
     private String FASTAPI_URL;
 
-    public Long requestAnalyze(String url, Integer review_num, User user) {
+    public String requestAnalyze(String url, Integer review_num, User user) {
 
         RestTemplate restTemplate = new RestTemplate();
 

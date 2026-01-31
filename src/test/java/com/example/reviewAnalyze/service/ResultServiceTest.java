@@ -61,7 +61,7 @@ class ResultServiceTest {
         when(reviewMapper.toDtoList(testReviewList)).thenReturn(testReviewDtoList);
 
         log.info("placeId={}", testPlace.getId());
-        DisplayResultDto resultDto = resultService.getReviewResult(testPlace.getId());
+        DisplayResultDto resultDto = resultService.getReviewResult(testPlace.getDisplayId());
 
         assertThat(resultDto.place()).isEqualTo(testPlaceDto);
         assertThat(resultDto.reviews()).isEqualTo(testReviewDtoList);

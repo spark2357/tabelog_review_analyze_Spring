@@ -22,11 +22,11 @@ public class ResultController {
 
     private final ResultService resultService;
 
-    @GetMapping("/result/{placeId}")
-    public String showResult(@PathVariable Long placeId, Model model) {
+    @GetMapping("/result/{displayId}")
+    public String showResult(@PathVariable String displayId, Model model) {
 
 
-        DisplayResultDto displayResultDto = resultService.getReviewResult(placeId);
+        DisplayResultDto displayResultDto = resultService.getReviewResult(displayId);
 
         model.addAttribute("place", displayResultDto.place());
         model.addAttribute("labeledKeywords", displayResultDto.labeledKeywords());

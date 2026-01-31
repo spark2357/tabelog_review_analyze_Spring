@@ -34,8 +34,8 @@ public class AnalyzeController {
         User currentUser = userService.findByUsername(username);
 
         // analyzeService는 FastAPI와 통신을 담당함.
-        Long placeId = analyzeService.requestAnalyze(url, review_num, currentUser);
+        String placeDisplayId = analyzeService.requestAnalyze(url, review_num, currentUser);
 
-        return "redirect:/result/" + placeId;
+        return "redirect:/result/" + placeDisplayId;
     }
 }

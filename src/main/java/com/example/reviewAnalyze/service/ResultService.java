@@ -24,6 +24,8 @@ import org.springframework.web.util.HtmlUtils;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static com.example.reviewAnalyze.util.IdGenerator.getPlaceDisplayId;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,8 +39,9 @@ public class ResultService {
     private final PlaceMapper placeMapper;
     private final CustomKeywordMapper keywordMapper;
 
-    public DisplayResultDto getReviewResult(Long placeId){
-        Place place = placeRepository.findById(placeId).orElseThrow(NoSuchElementException::new);
+    public DisplayResultDto getReviewResult(String displayId){
+        Place place = placeRepository.findByDisplayId(displayId);
+        // TODO: 없는 displayId 들어온 경우 처리
         List<Review> reviewList = reviewRepository.findAllByPlace(place);
         List<Keyword> keywordList = keywordRepository.findAllByPlace(place);
 
@@ -51,16 +54,17 @@ public class ResultService {
         return placeRepository.findByUserId(userId, pageable);
     }
 
-    public Long saveResult(User user, AnalyzedResultDto result){
+    public String saveResult(User user, AnalyzedResultDto result){
         Place place = savePlace(user, result.place());
         saveReviews(result.reviews(), place);
         saveKeywords(result.labeledKeywords(), place);
 
-        return place.getId();
+        return place.getDisplayId();
     }
 
     private Place savePlace(User user, PlaceDto result){
         Place place = Place.builder()
+                .displayId(getPlaceDisplayId())
                 .name(result.name())
                 .address(result.address())
                 .url(result.url())

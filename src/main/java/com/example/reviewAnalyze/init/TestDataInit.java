@@ -1,4 +1,4 @@
-package com.example.reviewAnalyze.testData;
+package com.example.reviewAnalyze.init;
 
 import com.example.reviewAnalyze.dto.analyzeDto.AnalyzedResultDto;
 import com.example.reviewAnalyze.entity.User;
