@@ -7,6 +7,16 @@
     <link rel="stylesheet" th:href="@{/css/input.css}">
 </head>
 <body>
+
+<div style="display: flex; justify-content: flex-end; gap: 10px;">
+    <form th:action="@{/my/results}" method="get">
+        <button type="submit" class="analyze-btn">목록</button>
+    </form>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="analyze-btn">로그아웃</button>
+    </form>
+</div>
+
 <h2>타베로그 URL 분석</h2>
 
 <form th:action="@{/analyze}" method="post" th:id="analyzeForm">
@@ -21,7 +31,7 @@
 
     <p style="color:#666;font-size:13px;">URL과 리뷰 수를 입력한 뒤 '분석 요청'을 눌러주세요.</p>
 
-    <button type="submit">분석 요청</button>
+    <button type="submit" class="analyze-btn">분석 요청</button>
 </form>
 </body>
 </html>

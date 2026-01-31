@@ -7,7 +7,15 @@
 </head>
 <body>
 
+<div>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="analyze-btn">로그아웃</button>
+    </form>
+</div>
+
+
 <h2>내가 분석한 식당 목록</h2>
+
 <div style="margin-bottom: 20px; text-align: center;">
     <a href="/analyze" class="analyze-btn">새 식당 분석하기</a>
 </div>

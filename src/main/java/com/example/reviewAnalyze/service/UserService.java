@@ -27,7 +27,7 @@ public class UserService {
         User user = User.builder()
                 .username(loginDto.getUsername())
                 .password(password)
-                .role("USER")
+                .role("ROLE_USER")
                 .build();
 
         userRepository.save(user);

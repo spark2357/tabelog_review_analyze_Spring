@@ -14,9 +14,16 @@
     </header>
 
     <main>
-        <div class="button-group">
+        <div class="button-group" sec:authorize="isAnonymous()">
             <a th:href="@{/login}" class="btn btn-login">로그인</a>
             <a th:href="@{/signup}" class="btn btn-signup">회원가입</a>
+        </div>
+
+        <div class="button-group" sec:authorize="isAuthenticated()">
+            <a th:href="@{/my/results}" class="btn btn-login">목록</a>
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit" class="btn btn-logout">로그아웃</button>
+            </form>
         </div>
     </main>
 

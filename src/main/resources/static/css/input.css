@@ -1,15 +1,16 @@
 body {
-    font-family: "Noto Sans KR", sans-serif;
-    background-color: #f9f9f9;
-    margin: 0;
-    padding: 20px;
+    font-family: "Noto Sans KR", Arial, sans-serif;
+    margin: 40px auto;
+    max-width: 1000px;
+    background-color: #fafafa;
     color: #333;
 }
 
 h2 {
     text-align: center;
-    color: #2c3e50;
     margin-bottom: 30px;
+    font-size: 1.8rem;
+    color: #222;
 }
 
 /* 폼 박스 */
@@ -65,7 +66,7 @@ form button {
     color: white;
     border: none;
     border-radius: 6px;
-    font-size: 16px;
+    font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -73,4 +74,27 @@ form button {
 
 form button:hover {
     background-color: #2980b9;
+}
+
+.analyze-btn {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.analyze-btn:hover {
+    background-color: #0056b3;
+}
+
+.analyze-form {
+    display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 20px;
 }

@@ -6,6 +6,16 @@
     <link rel="stylesheet" href="/css/result.css">
 </head>
 <body>
+
+<div style="display: flex; justify-content: flex-end; gap: 10px;">
+    <form th:action="@{/my/results}" method="get">
+        <button type="submit" class="analyze-btn">목록</button>
+    </form>
+    <form th:action="@{/logout}" method="post">
+        <button type="submit" class="analyze-btn">로그아웃</button>
+    </form>
+</div>
+
 <div class="container">
     <header th:object="${place}">
         <h1 th:text="*{name}">식당 이름</h1>

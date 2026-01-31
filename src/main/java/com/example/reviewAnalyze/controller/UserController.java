@@ -28,7 +28,7 @@ public class UserController {
     }
 
     /** 회원가입 처리 (POST 요청) */
-    @PostMapping("/register")
+    @PostMapping("/signup")
     public String register(@ModelAttribute("user") LoginDto loginDto, Model model) {
         try {
             userService.register(loginDto);
