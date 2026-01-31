@@ -1,4 +1,4 @@
-package com.example.reviewAnalyze.dto;
+package com.example.reviewAnalyze.dto.analyzeDto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

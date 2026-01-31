@@ -1,6 +1,6 @@
 package com.example.reviewAnalyze.testData;
 
-import com.example.reviewAnalyze.dto.AnalyzedResultDto;
+import com.example.reviewAnalyze.dto.analyzeDto.AnalyzedResultDto;
 import com.example.reviewAnalyze.entity.User;
 import com.example.reviewAnalyze.repository.UserRepository;
 import com.example.reviewAnalyze.service.ResultService;

@@ -1,9 +1,9 @@
 package com.example.reviewAnalyze.service;
 
-import com.example.reviewAnalyze.dto.AnalyzedResultDto;
-import com.example.reviewAnalyze.dto.KeywordDto;
-import com.example.reviewAnalyze.dto.PlaceDto;
-import com.example.reviewAnalyze.dto.ReviewDto;
+import com.example.reviewAnalyze.dto.analyzeDto.AnalyzedResultDto;
+import com.example.reviewAnalyze.dto.analyzeDto.KeywordDto;
+import com.example.reviewAnalyze.dto.analyzeDto.PlaceDto;
+import com.example.reviewAnalyze.dto.analyzeDto.ReviewDto;
 import com.example.reviewAnalyze.dto.displayDto.DisplayResultDto;
 import com.example.reviewAnalyze.dto.mapper.CustomKeywordMapper;
 import com.example.reviewAnalyze.dto.mapper.PlaceMapper;

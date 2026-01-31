@@ -1,6 +1,6 @@
 package com.example.reviewAnalyze.service;
 
-import com.example.reviewAnalyze.dto.AnalyzedResultDto;
+import com.example.reviewAnalyze.dto.analyzeDto.AnalyzedResultDto;
 import com.example.reviewAnalyze.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

@@ -1,8 +1,7 @@
 package com.example.reviewAnalyze.service;
 
-import com.example.reviewAnalyze.dto.AnalyzedResultDto;
-import com.example.reviewAnalyze.dto.PlaceDto;
-import com.example.reviewAnalyze.dto.ReviewDto;
+import com.example.reviewAnalyze.dto.analyzeDto.PlaceDto;
+import com.example.reviewAnalyze.dto.analyzeDto.ReviewDto;
 import com.example.reviewAnalyze.dto.displayDto.DisplayResultDto;
 import com.example.reviewAnalyze.dto.mapper.PlaceMapper;
 import com.example.reviewAnalyze.dto.mapper.ReviewMapper;
@@ -13,7 +12,6 @@ import com.example.reviewAnalyze.repository.KeywordRepository;
 import com.example.reviewAnalyze.repository.PlaceRepository;
 import com.example.reviewAnalyze.repository.ReviewRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +23,6 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @Slf4j

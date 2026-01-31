@@ -1,7 +1,7 @@
 package com.example.reviewAnalyze.dto.displayDto;
 
-import com.example.reviewAnalyze.dto.PlaceDto;
-import com.example.reviewAnalyze.dto.ReviewDto;
+import com.example.reviewAnalyze.dto.analyzeDto.PlaceDto;
+import com.example.reviewAnalyze.dto.analyzeDto.ReviewDto;
 
 import java.util.List;
 

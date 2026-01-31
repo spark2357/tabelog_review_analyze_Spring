@@ -18,9 +18,6 @@ public class CustomKeywordMapper {
         Map<String, List<Keyword>> groupedByLabel = keywordList.stream()
                 .collect(Collectors.groupingBy(Keyword::getLabel));
 
-        // TODO: 결과가 없는 label도 있을 수 있으니 빈 객체 넣어주기
-        // labelType 순회 돌면서 DisplayKeywordDto 만들어서 넣기
-
         List<DisplayKeywordDto> sortedLabeledKeywords = new ArrayList<>();
 
         for(LabelType label: LabelType.values()){
@@ -36,10 +33,7 @@ public class CustomKeywordMapper {
             } catch(NullPointerException e){
                 sortedLabeledKeywords.add(new DisplayKeywordDto(label.getDisplayName(), List.of()));
             }
-
-
         }
-
         return sortedLabeledKeywords.stream().toList();
     }
 }
