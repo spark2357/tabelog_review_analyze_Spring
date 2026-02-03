@@ -29,15 +29,17 @@ public class TestDataInit implements CommandLineRunner {
         // JSON 파일 읽기
         InputStream inputStream = resourceLoader.getResource("classpath:testData.json").getInputStream();
         AnalyzedResultDto testResult = objectMapper.readValue(inputStream, AnalyzedResultDto.class);
-        User user = createTestUser();
+        User user = createTestUser("test");
         resultService.saveResult(user, testResult);
+        User user2 = createTestUser("user");
+        resultService.saveResult(user2, testResult);
     }
 
-    private User createTestUser() {
+    private User createTestUser(String username) {
         String password = passwordEncoder.encode("test!");
 
         User user = User.builder()
-                .username("test")
+                .username(username)
                 .password(password)
                 .role("ROLE_USER")
                 .build();

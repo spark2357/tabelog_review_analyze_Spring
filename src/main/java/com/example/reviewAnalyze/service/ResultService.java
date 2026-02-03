@@ -12,6 +12,7 @@ import com.example.reviewAnalyze.entity.*;
 import com.example.reviewAnalyze.repository.KeywordRepository;
 import com.example.reviewAnalyze.repository.PlaceRepository;
 import com.example.reviewAnalyze.repository.ReviewRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -23,6 +24,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static com.example.reviewAnalyze.util.IdGenerator.getPlaceDisplayId;
 
@@ -39,9 +41,9 @@ public class ResultService {
     private final PlaceMapper placeMapper;
     private final CustomKeywordMapper keywordMapper;
 
-    public DisplayResultDto getReviewResult(String displayId){
-        Place place = placeRepository.findByDisplayId(displayId);
-        // TODO: 없는 displayId 들어온 경우 처리
+    public DisplayResultDto getReviewResult(String displayId, User user){
+        Place place = placeRepository.findByDisplayIdAndUser(displayId, user)
+                .orElseThrow(() -> new EntityNotFoundException("리뷰를 찾을 수 없습니다."));
         List<Review> reviewList = reviewRepository.findAllByPlace(place);
         List<Keyword> keywordList = keywordRepository.findAllByPlace(place);
 

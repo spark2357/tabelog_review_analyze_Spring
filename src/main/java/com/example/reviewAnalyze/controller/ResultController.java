@@ -4,15 +4,16 @@ import com.example.reviewAnalyze.dto.displayDto.DisplayResultDto;
 import com.example.reviewAnalyze.entity.LabelType;
 import com.example.reviewAnalyze.entity.Place;
 import com.example.reviewAnalyze.entity.User;
+import com.example.reviewAnalyze.security.CustomUserDetails;
 import com.example.reviewAnalyze.service.ResultService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Slf4j
@@ -23,10 +24,12 @@ public class ResultController {
     private final ResultService resultService;
 
     @GetMapping("/result/{displayId}")
-    public String showResult(@PathVariable String displayId, Model model) {
+    public String showResult(@PathVariable String displayId,
+                             @AuthenticationPrincipal CustomUserDetails userDetails,
+                             Model model) {
 
 
-        DisplayResultDto displayResultDto = resultService.getReviewResult(displayId);
+        DisplayResultDto displayResultDto = resultService.getReviewResult(displayId, userDetails.user());
 
         model.addAttribute("place", displayResultDto.place());
         model.addAttribute("labeledKeywords", displayResultDto.labeledKeywords());
@@ -40,11 +43,11 @@ public class ResultController {
     public String showResultList(@RequestParam(defaultValue = "0") int page,
                                  @RequestParam(defaultValue = "10") int size,
                                  @RequestParam(defaultValue = "id") String sortBy,
-                                 @RequestParam(defaultValue = "desc") String direction, Model model, Authentication authentication) {
+                                 @RequestParam(defaultValue = "desc") String direction,
+                                 @AuthenticationPrincipal CustomUserDetails userDetails,
+                                 Model model) {
 
-        User userDetails = (User)authentication.getPrincipal();
-        Long userId = userDetails.getId();
-        log.info("userId={}", userId);
+        Long userId = userDetails.user().getId();
 
         Page<Place> results = resultService.getResultListByUserId(userId, page, size, sortBy, direction);
 
