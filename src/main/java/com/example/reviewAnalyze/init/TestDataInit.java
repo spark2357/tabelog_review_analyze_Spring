@@ -39,7 +39,7 @@ public class TestDataInit implements CommandLineRunner {
         User user = User.builder()
                 .username("test")
                 .password(password)
-                .role("USER")
+                .role("ROLE_USER")
                 .build();
 
         return userRepository.save(user);
