@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpServerErrorException;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
@@ -21,14 +23,9 @@ public class AnalyzeService {
     private String FASTAPI_URL;
 
     public String requestAnalyze(String url, Integer review_num, User user) {
-
         RestTemplate restTemplate = new RestTemplate();
-
-        // 요청을 보내고 결과를 받는다.
         AnalyzedResultDto result = restTemplate.exchange(FASTAPI_URL, HttpMethod.POST, getHttpEntity(url, review_num), AnalyzedResultDto.class)
                 .getBody();
-
-        // TODO: result Null 처리하기
 
         return resultService.saveResult(user, result);
     }
