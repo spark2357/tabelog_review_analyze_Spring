@@ -4,12 +4,20 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.ResourceAccessException;
 
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(HttpClientErrorException.TooManyRequests.class)
+    public String handleTooManyRequests(HttpClientErrorException ex) {
+        log.error("대기열 가득 참");
+        log.error(ex.getMessage());
+        return "error/429";
+    }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public String handleEntityNotFound(EntityNotFoundException ex) {

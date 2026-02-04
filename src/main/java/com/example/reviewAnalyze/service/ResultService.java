@@ -12,6 +12,7 @@ import com.example.reviewAnalyze.entity.*;
 import com.example.reviewAnalyze.repository.KeywordRepository;
 import com.example.reviewAnalyze.repository.PlaceRepository;
 import com.example.reviewAnalyze.repository.ReviewRepository;
+import com.example.reviewAnalyze.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +37,7 @@ public class ResultService {
     private final PlaceRepository placeRepository;
     private final ReviewRepository reviewRepository;
     private final KeywordRepository keywordRepository;
+    private final UserRepository userRepository;
 
     private final ReviewMapper reviewMapper;
     private final PlaceMapper placeMapper;
@@ -56,12 +58,12 @@ public class ResultService {
         return placeRepository.findByUserId(userId, pageable);
     }
 
-    public String saveResult(User user, AnalyzedResultDto result){
+    public void saveResult(AnalyzedResultDto result){
+        User user = userRepository.findById(result.userId())
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
         Place place = savePlace(user, result.place());
         saveReviews(result.reviews(), place);
         saveKeywords(result.labeledKeywords(), place);
-
-        return place.getDisplayId();
     }
 
     private Place savePlace(User user, PlaceDto result){

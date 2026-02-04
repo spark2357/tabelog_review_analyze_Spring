@@ -1,11 +1,13 @@
 package com.example.reviewAnalyze.controller;
 
+import com.example.reviewAnalyze.dto.displayDto.DisplayQueueDto;
 import com.example.reviewAnalyze.entity.User;
 import com.example.reviewAnalyze.service.AnalyzeService;
 import com.example.reviewAnalyze.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,7 +22,10 @@ public class AnalyzeController {
     private final UserService userService;
 
     @GetMapping("/analyze")
-    public String analyzeForm(){
+    public String analyzeForm(Model model){
+        DisplayQueueDto displayQueueDto = analyzeService.getQueueStatus();
+        model.addAttribute("queueSize", displayQueueDto.queueSize());
+        model.addAttribute("maxQueueSize", displayQueueDto.maxQueueSize());
         return "input";
     }
 
@@ -34,8 +39,7 @@ public class AnalyzeController {
         User currentUser = userService.findByUsername(username);
 
         // analyzeService는 FastAPI와 통신을 담당함.
-        String placeDisplayId = analyzeService.requestAnalyze(url, review_num, currentUser);
-
-        return "redirect:/result/" + placeDisplayId;
+        analyzeService.requestAnalyze(url, review_num, currentUser);
+        return "enqueue";
     }
 }

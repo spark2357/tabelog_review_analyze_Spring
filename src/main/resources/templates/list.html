@@ -78,3 +78,8 @@
 
 </body>
 </html>
+
+<script th:if="${alertMessage != null}">
+    alert([[${alertMessage}]]);
+</script>
+

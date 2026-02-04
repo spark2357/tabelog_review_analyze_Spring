@@ -30,9 +30,7 @@ public class TestDataInit implements CommandLineRunner {
         InputStream inputStream = resourceLoader.getResource("classpath:testData.json").getInputStream();
         AnalyzedResultDto testResult = objectMapper.readValue(inputStream, AnalyzedResultDto.class);
         User user = createTestUser("test");
-        resultService.saveResult(user, testResult);
-        User user2 = createTestUser("user");
-        resultService.saveResult(user2, testResult);
+        resultService.saveResult(testResult);
     }
 
     private User createTestUser(String username) {
