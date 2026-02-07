@@ -39,10 +39,18 @@ AWS EC2 2개, RDS 1개에 배포.
 ### 잘못된 Id를 입력한 경우
 <img width="1919" height="1199" alt="404" src="https://github.com/user-attachments/assets/4ecd0eac-858d-42e0-b50e-cd8f56c79f6a" />
 
-<img width="1115" height="6950" alt="분석 결과" src="https://github.com/user-attachments/assets/20246fd3-dc7e-4e90-abaa-b5940d0d3f08" />
+<img width="1916" height="1118" alt="분석 결과 1" src="https://github.com/user-attachments/assets/cc339ae2-9960-47e5-98ec-8dd42c9c9ad9" />
+<img width="1905" height="832" alt="분석 결과 2" src="https://github.com/user-attachments/assets/3d8bb7a2-2b9b-4822-bfd3-7b6a3bf1069f" />
+<img width="1894" height="992" alt="분석 결과 3" src="https://github.com/user-attachments/assets/27bf9b27-6eed-4926-b913-f0205d1325cb" />
+<img width="1904" height="1059" alt="분석 결과 4" src="https://github.com/user-attachments/assets/9031d9d6-966f-4a4d-92c4-c2f27086a50b" />
+<img width="1897" height="1059" alt="분석 결과 5" src="https://github.com/user-attachments/assets/07538202-c6fe-403e-a59c-6c3fc5b3bd81" />
 
 ## 분석 결과 - 키워드 필터링
-<img width="1115" height="4529" alt="분석 결과 - 키워드" src="https://github.com/user-attachments/assets/955f154f-4e5f-48d4-b637-3fd13a3d8db8" />
+<img width="1911" height="1124" alt="분석 결과 키워드 1" src="https://github.com/user-attachments/assets/f10b9d2f-0008-45c0-b5ec-794559603375" />
+<img width="1906" height="830" alt="분석 결과 키워드 2" src="https://github.com/user-attachments/assets/0cbf579d-79f0-4799-b967-63ac5739eb9b" />
+<img width="1867" height="742" alt="분석 결과 키워드 3" src="https://github.com/user-attachments/assets/a6462546-31a6-47bd-887d-56121fe47222" />
+<img width="1875" height="783" alt="분석 결과 키워드 4" src="https://github.com/user-attachments/assets/5b4816b4-d1e5-4455-b9ba-379f463859e8" />
+
 
 ### 500 에러
 <img width="1867" height="1043" alt="image" src="https://github.com/user-attachments/assets/72d0031c-f9b1-483b-a94b-9af43afcd181" />
